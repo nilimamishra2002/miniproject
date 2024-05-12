@@ -1,0 +1,236 @@
+<!-- cart.html 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart | @Mypersonalmeal.com</title>
+    <link rel="stylesheet" href="cart.css">
+</head>
+
+<body>
+    <div class="cart-container">
+        <h2>Your Cart</h2>
+        <ul id="cartItems" class="cart-items">
+            <!-- JavaScript will populate cart items dynamically 
+        </ul>
+        <p>Total: Rs. <span id="cartTotal" class="cart-total">0</span></p>
+        <button onclick="proceedToCheckout()" class="checkout-btn">Proceed to Checkout</button>
+    </div>
+
+    <script>
+        // Example cart items data (to be replaced with actual data)
+        const cartItems = [
+            { name: "Italian", price: 250, quantity: 0 },
+            { name: "Thai", price: 250, quantity: 0 },
+            { name: "Meat", price: 250, quantity: 0 },
+            // Add more items here
+        ];
+
+        const cartList = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+
+        // Function to display cart items
+        function displayCartItems() {
+            cartList.innerHTML = ''; // Clear existing items
+
+            cartItems.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <span>${item.name} - Rs.${item.price}</span>
+                    <div>
+                        <button onclick="decreaseQuantity('${item.name}')">-</button>
+                        <span>${item.quantity}</span>
+                        <button onclick="increaseQuantity('${item.name}')">+</button>
+                    </div>
+                `;
+                cartList.appendChild(listItem);
+            });
+
+            // Update total price
+            updateCartTotal();
+        }
+
+        // Function to update total price
+        function updateCartTotal() {
+            const total = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+            cartTotal.textContent = total;
+        }
+
+        // Function to increase quantity
+        function increaseQuantity(itemName) {
+            const item = cartItems.find(item => item.name === itemName);
+            if (item) {
+                item.quantity++;
+                displayCartItems(); // Update cart display
+            }
+        }
+
+        // Function to decrease quantity
+        function decreaseQuantity(itemName) {
+            const item = cartItems.find(item => item.name === itemName);
+            if (item && item.quantity > 0) {
+                item.quantity--;
+                displayCartItems(); // Update cart display
+            }
+        }
+        // Function to handle checkout
+        function proceedToCheckout() {
+
+            alert('Redirecting to Checkout...');
+            window.location.href = 'contact.html';
+            // Implement checkout logic (e.g., redirect to checkout page)
+            // window.location.href = 'checkout.html';
+        }
+
+        // Display initial cart items
+        displayCartItems();
+    </script>
+</body>
+
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart | @Mypersonalmeal.com</title>
+    <link rel="stylesheet" href="cart.css">
+</head>
+<body>
+    <div class="cart-container">
+        <h2>Your Cart</h2>
+        <ul id="cartItems" class="cart-items">
+            <!-- Cart items will be dynamically added here -->
+        </ul>
+        <p>Total: Rs. <span id="cartTotal" class="cart-total">0</span></p>
+
+        <div class="coupon-container">
+            <label for="coupon">Apply Coupon Code:</label>
+            <input type="text" id="coupon" placeholder="Enter coupon code">
+            <button onclick="applyCoupon()">Apply</button>
+        </div>
+
+        <button onclick="proceedToCheckout()" class="checkout-btn">Proceed to Checkout</button>
+    </div>
+
+    <script>
+        // Example cart items data (to be replaced with actual data)
+        let cartItems = [
+            { id: 1, name: "Italian", price: 250, quantity: 0 },
+            { id: 2, name: "Thai", price: 250, quantity: 0 },
+            {id: 2, name: "Meat", price: 250, quantity: 0}
+            // Add more items here
+        ];
+
+        const cartList = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+
+        // Function to display cart items
+        function displayCartItems() {
+            cartList.innerHTML = ''; // Clear existing items
+
+            cartItems.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <div class="cart-item">
+                        <span class="item-name">${item.name}</span>
+                        <span class="item-details">
+                            <span class="item-price">Rs.${item.price}</span>
+                            <button onclick="decreaseQuantity(${item.id})">-</button>
+                            <span class="item-quantity">${item.quantity}</span>
+                            <button onclick="increaseQuantity(${item.id})">+</button>
+                        </span>
+                    </div>
+                `;
+                cartList.appendChild(listItem);
+            });
+
+            // Update total price
+            updateCartTotal();
+        }
+
+        // Function to update total price
+        function updateCartTotal() {
+            let total = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+
+            // Apply discount if coupon is applied
+            if (isCouponApplied()) {
+                total *= 0.9; // Apply 10% discount
+            }
+
+            cartTotal.textContent = total;
+        }
+
+        // Function to check if coupon is applied
+        function isCouponApplied() {
+            const couponInput = document.getElementById('coupon').value.trim();
+            return couponInput.toLowerCase() === 'mypersonalmeal';
+        }
+
+        
+
+        // Function to increase quantity
+        function increaseQuantity(itemId) {
+            const item = cartItems.find(item => item.id === itemId);
+            if (item) {
+                item.quantity++;
+                displayCartItems(); // Re-render cart items
+            }
+        }
+
+        // Function to decrease quantity
+        function decreaseQuantity(itemId) {
+            const item = cartItems.find(item => item.id === itemId);
+            if (item && item.quantity > 0) {
+                item.quantity--;
+                displayCartItems(); // Re-render cart items
+            }
+        }
+   // Function to apply coupon
+   function applyCoupon() {
+            if (isCouponApplied()) {
+                alert('Coupon applied successfully! You get 10% off.');
+            } else {
+                alert('Invalid coupon code. Please try again.');
+            }
+            updateCartTotal(); // Update total after applying coupon
+        }
+        // Function to handle checkout
+        function proceedToCheckout() {
+            window.location.href = 'success.html'; // Redirect to success.html
+        }
+
+        // Display initial cart items
+        displayCartItems();
+    </script>
+     <script>
+        // Function to show order success message with slide-up animation
+        function showSuccessMessage() {
+            const overlay = document.createElement('div');
+            overlay.className = 'overlay';
+            document.body.appendChild(overlay);
+
+            const successMessage = document.createElement('div');
+            successMessage.className = 'success-message slide-up';
+            successMessage.innerHTML = `
+                <h2>Order Successful</h2>
+                <p>Thank you for Ordering.</p>
+                <button onclick="redirectToFeedback()">Leave Feedback</button>
+            `;
+            document.body.appendChild(successMessage);
+
+            // Delay redirection to order-success.html
+            setTimeout(function() {
+                window.location.href = 'order-success.html';
+            }, 1000); // Adjust delay time (in milliseconds) as needed
+        }
+
+        // Function to redirect to feedback page
+        function redirectToFeedback() {
+            window.location.href = 'contact.html'; // Redirect to contact page
+        }
+    </script>
+</body>
+</html>
